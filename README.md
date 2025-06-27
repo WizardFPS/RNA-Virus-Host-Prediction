@@ -3,7 +3,7 @@ Code material for publication "Virus host prediction using machine learning and 
 
 HTP_baseline.ipynb and tBLASTx_baseline.ipynb - ML-based and homology-based baseline methods
 
-hyperparameter_tuning.py and models_tuned.py - Tuning ML hyperparameters on the first iteration of dataset split (hyperparameter_tuning.py) and training classifiers on the remaining nine dataset splits
+hyperparameter_tuning.py and models_tuned.py - Tuning ML hyperparameters on the first iteration of dataset split (hyperparameter_tuning.py) and training classifiers on the remaining nine dataset splits (models_tuned.py)
 
 count_features.py - Calculate k-mer frequencies
 
