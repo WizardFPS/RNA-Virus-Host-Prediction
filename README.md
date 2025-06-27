@@ -5,6 +5,8 @@ HTP_baseline.ipynb and tBLASTx_baseline.ipynb - ML-based and homology-based base
 
 hyperparameter_tuning.py and models_tuned.py - Tuning ML hyperparameters on the first iteration of dataset split (hyperparameter_tuning.py) and training classifiers on the remaining nine dataset splits (models_tuned.py)
 
+remove_similar.py - removes si,ilar sequences by identity
+
 count_features.py - Calculate k-mer frequencies
 
 VHDB_genomes_.fasta - RNA virus genomes in fasta-format
