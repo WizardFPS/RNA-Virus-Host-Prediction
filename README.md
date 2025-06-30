@@ -9,6 +9,8 @@ remove_similar.py - removes similar sequences by identity
 
 count_features.py - Calculate k-mer frequencies
 
-VHDB_genomes_.fasta - RNA virus genomes in fasta-format
+VHDB_genomes.fasta - RNA virus genomes in fasta-format
 
-meta_df_.tsv - RNA virus genomes annotation, including host
+VHDB_cds.fasta - RNA virus protein sequences in fasta-format
+
+Table_S1.tsv - RNA virus genomes annotation, including host
