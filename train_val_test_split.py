@@ -1,5 +1,7 @@
-# Train-test function, originally used in the paper "Virus host prediction using machine learning and short sequence k-mers: effect of taxonomic, host-dependent features and sample bias"
-
+"""
+Train-test function for "Non-overlapping taxa" strategy dataset split,
+originally used in the paper "Virus host prediction using machine learning and short sequence k-mers: effect of taxonomic, host-dependent features and sample bias".
+"""
 
 def taxa_splitter(df, list_taxa, taxa_level_input = "genus", test_taxon = None):
    
@@ -121,8 +123,81 @@ print('Hosts in test:', dict(zip(list(Counter(y_test).keys()), list(map(lambda x
 print('Hosts in train:', dict(zip(list(Counter(y_train).keys()), list(map(lambda x: str(round(x/len(y_train)*100, 3))+'%', list(Counter(y_train).values()))))))
 """
 
+"""
+Further developed similar train-val-test function for "Non-overlapping taxa" strategy dataset split.
+"""
+def stratified_split_data(df, target_col, feature1_col, feature2_col, test_size=0.2, val_size=0.2, random_state=None):
 
-# Further developed similar train-val-test function.
+    df = df.copy()
+    original_count = len(df)
+    df['_stratify'] = df[target_col].astype(str) + "_" + df[feature1_col].astype(str)
+    
+    grouped = df.groupby(feature2_col)
+    groups = [group for _, group in grouped]
+    
+    np.random.seed(random_state)
+    np.random.shuffle(groups)
+    
+    n = len(groups)
+    n_test = max(1, int(n * test_size))
+    n_val = max(1, int(n * val_size))
+    n_train = max(1, n - n_test - n_val)
+    
+    train_groups = groups[:n_train]
+    val_groups = groups[n_train:n_train+n_val]
+    test_groups = groups[n_train+n_val:]
+    
+    train_df = pd.concat(train_groups) if train_groups else pd.DataFrame(columns=df.columns)
+    val_df = pd.concat(val_groups) if val_groups else pd.DataFrame(columns=df.columns)
+    test_df = pd.concat(test_groups) if test_groups else pd.DataFrame(columns=df.columns)
+    
+    def adjust_distribution(data, strat_col):
+        if len(data) == 0:
+            return data
+        
+        current_dist = data[strat_col].value_counts(normalize=True)
+        if current_dist.max() > 0.5:  
+            try:
+                _, adjusted = train_test_split(
+                    data,
+                    test_size=0.8,
+                    stratify=data[strat_col],
+                    random_state=random_state
+                )
+                return adjusted
+            except:
+                return data
+        return data
+    
+    train_df = adjust_distribution(train_df, '_stratify')
+    val_df = adjust_distribution(val_df, '_stratify')
+    test_df = adjust_distribution(test_df, '_stratify')
+    
+    def get_unique_features(df_part):
+        return set(df_part[feature2_col].unique()) if len(df_part) > 0 else set()
+    
+    train_features = get_unique_features(train_df)
+    val_features = get_unique_features(val_df)
+    test_features = get_unique_features(test_df)
+   
+    assert len(train_features & val_features) == 0, "Пересечения между train и val"
+    assert len(train_features & test_features) == 0, "Пересечения между train и test"
+    assert len(val_features & test_features) == 0, "Пересечения между val и test"
+    
+    total_after_split = len(train_df) + len(val_df) + len(test_df)
+    assert total_after_split == original_count, f"Потеряны объекты: было {original_count}, стало {total_after_split}"
+    
+    for df_part in [train_df, val_df, test_df]:
+        if '_stratify' in df_part.columns:
+            df_part.drop('_stratify', axis=1, inplace=True)
+        df_part = df_part.sample(frac=1, random_state=random_state).reset_index(drop=True)
+    
+    return train_df, val_df, test_df
+
+
+"""
+Train-test function for "Closely related" strategy dataset split.
+"""
 def train_val_test_split(X, y, stratify=None, val_size=0.20, test_size=0.20, random_state=13):
     from sklearn.model_selection import train_test_split
 
@@ -171,4 +246,6 @@ X_train_indices, X_val_indices, X_test_indices, y_train, y_val, y_test = train_v
                                                                                               val_size=0.20, 
                                                                                               test_size=0.20, 
                                                                                               random_state=42)
+
+With |stratify = None| option function 
 """
