@@ -24,4 +24,4 @@ The repository to the paper "Virus host prediction using machine learning and sh
 
  - models_tuned.py - Training classifiers on the remaining nine dataset splits
 
- - HTP_baseline.ipynb and tBLASTx_baseline.ipynb - ML-based and homology-based baseline methods
+ - HTP_baseline.ipynb and tBLASTx_baseline.py - ML-based and homology-based baseline methods
