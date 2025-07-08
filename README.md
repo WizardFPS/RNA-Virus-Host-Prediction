@@ -14,11 +14,11 @@ The repository to the paper "Virus host prediction using machine learning and sh
 
  - remove_similar.py - Removes similar sequences by identity
    
- - extract_genome_fragmnets.py - function for fragments extraction from virus genomes
+ - extract_genome_fragmnets.py - Fragments extraction from virus genomes
 
  - count_features.py - Calculate k-mer frequencies
 
- - train_val_test_split.py - functions for "Closely related" and "Non-overlapping taxa" strategies dataset splits 
+ - train_val_test_split.py - "Closely related" and "Non-overlapping taxa" strategies dataset splits functions
 
  - hyperparameter_tuning.py - Tuning ML hyperparameters on the first iteration of dataset split
 
