@@ -18,6 +18,8 @@ The repository to the paper "Virus host prediction using machine learning and sh
 
  - count_features.py - Calculate k-mer frequencies
 
+ - train_val_test_split.py - functions for closely related and non-overlapping taxa dataset splits 
+
  - hyperparameter_tuning.py - Tuning ML hyperparameters on the first iteration of dataset split
 
  - models_tuned.py - Training classifiers on the remaining nine dataset splits
