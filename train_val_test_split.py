@@ -123,6 +123,7 @@ print('Hosts in test:', dict(zip(list(Counter(y_test).keys()), list(map(lambda x
 print('Hosts in train:', dict(zip(list(Counter(y_train).keys()), list(map(lambda x: str(round(x/len(y_train)*100, 3))+'%', list(Counter(y_train).values()))))))
 """
 
+
 """
 Further developed similar train-val-test function for "Non-overlapping taxa" strategy dataset split.
 """
@@ -193,7 +194,41 @@ def stratified_split_data(df, target_col, feature1_col, feature2_col, test_size=
         df_part = df_part.sample(frac=1, random_state=random_state).reset_index(drop=True)
     
     return train_df, val_df, test_df
+"""
+Options:
+df - meta data table
+target_col - column name with y labels (virus host)
+feature1_col - virus taxa column to be stratified (virus family)
+feature2_col - virus taxa column to be non-overlapping (virus genus)
+val_size - validation sample proportion
+test_size - test sample proportion
+random_state - random state
 
+Usage:
+
+meta_df = pd.read_csv("meta_df.tsv", sep="\t", index_col=0)
+
+train_df, val_df, test_df = stratified_split_data(meta_df, target_col="virus host", feature1_col="virus family", feature2_col="virus genus",
+                                                  test_size=0.20, val_size=0.20, random_state=31)
+print("Genomes host stats")
+
+### improved collections.Counter
+from collections import Counter
+
+def calculate_percentages_sorted(items, sort_keys=True):
+    counts = Counter(items)
+    total = len(items)
+    if not sort_keys:
+        sorted_items = sorted(counts.items(), key=lambda x: x[1], reverse=True)
+        return {item: (count / total) * 100 for item, count in sorted_items}
+    if sort_keys:
+        percentages = {item: (count / total) * 100 for item, count in counts.items()}
+        return dict(sorted(percentages.items()))
+
+print("Train", calculate_percentages_sorted(meta_df.loc[train_df.index]["virus host"]))
+print("Val", calculate_percentages_sorted(meta_df.loc[val_df.index]["virus host"]))
+print("Test", calculate_percentages_sorted(meta_df.loc[test_df.index]["virus host"]))
+"""
 
 """
 Train-test function for "Closely related" strategy dataset split.
