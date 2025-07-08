@@ -13,6 +13,8 @@ The repository to the paper "Virus host prediction using machine learning and sh
 ## Code
 
  - remove_similar.py - Removes similar sequences by identity
+   
+ - extract_genome_fragmnets.py - function for fragments extraction from virus genomes
 
  - count_features.py - Calculate k-mer frequencies
 
