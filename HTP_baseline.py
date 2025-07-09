@@ -43,9 +43,11 @@ for iteration in range(10):
 	X_test, y_test = get_X_y(f"test_genomes|{iteration}", meta_df)
 	print(classification_report(y_test, best_model.predict(X_test)))
 	
-	
-# Support Vector Machine
-Regularization values (C), extractes from Host Taxon Predictor research data
+"""	
+Support Vector Machine
+Regularization values (C) were extracted from Host Taxon Predictor research data
+"""
+
 host_c_svc = {"Insecta": 0.03125, "Mammalia": 0.03125, "Viridiplantae": 0.25}
 
 def SVC_multiclassification(models, X_test, y_test, print_binary = False):
