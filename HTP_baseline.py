@@ -13,7 +13,7 @@ meta_df = pf.read_csv("META DATA TABLE", sep="\t", index_col=0)
 
 def get_X_y(name, meta_df):
     iteration = name.split("|")[1]
-	name = name.split("|")[0]
+    name = name.split("|")[0]
     df = pd.read_csv(PATH_FEATURES+name+f"_features_it{iteration}.tsv", sep="\t", index_col=0) ### Change filename of features dataset
     y = meta_df.loc[df.index].host.values
     X = StandardScaler().fit_transform(df.values)
